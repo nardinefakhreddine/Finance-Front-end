@@ -6,12 +6,27 @@ import Navbar from './NavBar';
 
 class Dashboard extends Component {
 
-    logout = (e) => {
-        axios.post('http://localhost:8000/api/logout')
-            .then(res => console.log(res))
-            .catch(error => console.log(error));
+    logout = async (e) => {
 
         e.preventDefault();
+        const url = "http://localhost:8000/api/logout";
+        const Token = window.localStorage.adminsToken;
+        const body = {
+
+        }
+        const respond = await fetch(url, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + Token,
+
+            },
+            body: JSON.stringify(body)
+        });
+        console.log(respond);
+        const res = await respond.json();
+        console.log(res);
         localStorage.removeItem("adminsToken");
 
         this.props.history.push(`/`);

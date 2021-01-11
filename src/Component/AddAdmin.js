@@ -2,39 +2,58 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import axios from 'axios';
 
-class Add extends Component {
+class AddAdmin extends Component {
 
 
     constructor(props) {
         super(props);
         this.state = {
             name: '',
-            tel: ''
+            description: '',
+            photo: 'empty'
         }
     }
     handleInputNameChange = (event) => {
         this.setState({
-            name: event.target.value
+            name: event.target.value,
+
         })
     }
-    handleInputTelChange = (event) => {
+    handleInputDChange = (event) => {
         this.setState({
-            tel: event.target.value
+            description: event.target.value
         })
     }
+    handleInputChange = (event) => {
+        this.setState({
+            name: event.target.value,
+            description: event.target.value
+        })
+    }
+
+
     handleFormSubmit = (event) => {
         event.preventDefault();
-        axios.post('http://localhost:8000/api/contact/create',
+        axios.post('http://localhost:8000/api/Addcategory',
             {
                 name: this.state.name,
-                tel: this.state.tel
+                description: this.state.description,
+                photo: this.state.photo
+            },
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.adminsToken}`
+                }
             }
         ).then(response => {
             this.setState({
                 name: '',
-                tel: ''
+                tel: '',
+                photo: ''
             })
-            this.props.history.push('/');
+            this.props.history.push('/categories');
         }
         ).catch(error => console.log(error));
     }
@@ -44,7 +63,7 @@ class Add extends Component {
             <div className="row justify-content-center">
                 <div className="col-md-8">
                     <div className="card">
-                        <div className="card-header">Add Admin</div>
+                        <div className="card-header">Add New Admin</div>
                         <div className="card-body">
 
                             <form onSubmit={this.handleFormSubmit}>
@@ -52,7 +71,8 @@ class Add extends Component {
 
                                     <input type="text"
                                         required
-                                        onChange={this.handleInputNameChange}
+                                        name="name"
+                                        onChange={this.handleInputChange}
                                         value={this.state.name}
                                         className="form-control"
                                         placeholder="Enter name" />
@@ -61,11 +81,23 @@ class Add extends Component {
 
                                     <input type="text"
                                         required
-                                        onChange={this.handleInputTelChange}
-                                        value={this.state.tel}
+                                        name="email"
+                                        onChange={this.handleInputChange}
+                                        value={this.state.email}
                                         className="form-control"
-                                        placeholder="Enter phone" />
+                                        placeholder="Email" />
                                 </div>
+                                <div className="form-group">
+
+                                    <input type="password"
+                                        required
+                                        name="password"
+                                        onChange={this.handleInputChange}
+                                        value={this.state.password}
+                                        className="form-control"
+                                        placeholder="Password" />
+                                </div>
+
                                 <div className="form-group form-check">
 
                                 </div>
@@ -81,4 +113,4 @@ class Add extends Component {
         );
     }
 }
-export default Add;
+export default AddAdmin;

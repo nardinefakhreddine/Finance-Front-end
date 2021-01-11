@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
 import SuccessAlert from './SuccessAlert';
 import Navbar from './NavBar';
+import { Confirm } from 'react-st-modal';
 class Admin extends Component {
 
     constructor(props) {
@@ -76,15 +77,15 @@ class Admin extends Component {
                 <div className="row justify-content-center">
                     <div class="col-md-8">
                         <div className="card">
-                            <div className="card-header">All Admins</div>
-                            <Link to="/add" className="btn btn-primary col-md-3 m-2 btn-sm mr-2">Add</Link>
+                            <div className="card-header"> Admin Profile</div>
+                            <Link to="/AddAdmin" className="btn btn-primary col-md-3 m-2 btn-sm mr-2">Add</Link>
                             <div class="card-body">
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
                                             <th>Name</th>
-                                            <th>Tel</th>
+                                            <th>Email</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>

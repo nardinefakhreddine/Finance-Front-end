@@ -4,14 +4,15 @@ import axios from 'axios';
 import ErrorAlert from './ErrorAlert'
 import SuccessAlert from './SuccessAlert';
 
-class Edit extends Component {
+class Editcategory extends Component {
 
 
     constructor(props) {
         super(props);
         this.state = {
             name: '',
-            tel: ''
+            description: '',
+            photo: 'empty'
         }
     }
     handleInputNameChange = (event) => {
@@ -19,46 +20,72 @@ class Edit extends Component {
             name: event.target.value
         })
     }
-    handleInputTelChange = (event) => {
+    handleInputDChange = (event) => {
         this.setState({
-            tel: event.target.value
+            description: event.target.value
         })
     }
-    handleFormSubmit = (event) => {
-        event.preventDefault();
-        axios.post('http://localhost:8000/api/contact/create',
-            {
-                name: this.state.name,
-                tel: this.state.tel
-            }
-        ).then(response => {
-            this.setState({
-                name: '',
-                tel: '',
-                alert_message: ''
-            })
-            this.props.history.push('/');
-        }
-        ).catch(error => console.log(error));
-    }
+    /*  handleFormSubmit = (event) => {
+          event.preventDefault();
+          axios.post('http://localhost:8000/api/Addcategory',
+              {
+                  name: this.state.name,
+                  description: this.state.description,
+                  photo: this.state.photo
+              },
+              {
+                  headers: {
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json',
+                      Authorization: `Bearer ${localStorage.adminsToken}`
+                  }
+              }
+          ).then(response => {
+              this.setState({
+                  name: '',
+                  description: '',
+                  photo: 'empty',
+                  alert_message: ''
+              })
+              this.props.history.push('/categories');
+          }
+          ).catch(error => console.log(error));
+      }*/
     componentDidMount() {
         const id = this.props.match.params.id;
-        axios.get(`http://localhost:8000/api/contact/${id}/edit`).then(response => {
-            this.setState({
-                name: response.data.name,
-                tel: response.data.tel
-            })
-        }).catch(error => console.error());
+        console.log(id);
+        axios.get(`http://localhost:8000/api/editcategory/${id}`,
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.adminsToken}`
+                }
+            }).then(response => {
+                this.setState({
+                    name: response.data.name,
+                    description: response.data.description,
+                })
+                console.log(this.state);
+            }).catch(error => console.error());
 
     }
     handleFormSubmit = (event) => {
 
         event.preventDefault();
         const id = this.props.match.params.id;
-        axios.put(`http://localhost:8000/api/contact/${id}/update`,
+        axios.put(`http://localhost:8000/api/updatecategory/${id}`,
             {
                 name: this.state.name,
-                tel: this.state.tel
+                description: this.state.description,
+
+            },
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.adminsToken}`
+                }
             }
         ).then(response => {
             this.setState({
@@ -66,7 +93,7 @@ class Edit extends Component {
                 tel: '',
                 alert_message: ''
             })
-            this.props.history.push('/');
+            this.props.history.push('/categories');
         }
         ).catch(error => {
             this.setState({ alert_message: "Error" })
@@ -87,7 +114,7 @@ class Edit extends Component {
                 <div className="row justify-content-center">
                     <div className="col-md-8">
                         <div className="card">
-                            <div className="card-header">Edit Admin</div>
+                            <div className="card-header">Edit Category</div>
                             <div className="card-body">
 
                                 <form onSubmit={this.handleFormSubmit}>
@@ -104,8 +131,8 @@ class Edit extends Component {
 
                                         <input type="text"
                                             required
-                                            onChange={this.handleInputTelChange}
-                                            value={this.state.tel}
+                                            onChange={this.handleInputDChange}
+                                            value={this.state.description}
                                             className="form-control"
                                             placeholder="Enter phone" />
                                     </div>
@@ -124,4 +151,4 @@ class Edit extends Component {
         );
     }
 }
-export default Edit;
+export default Editcategory;

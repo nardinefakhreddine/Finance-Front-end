@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
 import SuccessAlert from './SuccessAlert';
 import Navbar from './NavBar';
+import { Confirm } from 'react-st-modal';
+
 class Category extends Component {
 
     constructor(props) {
@@ -103,7 +105,7 @@ class Category extends Component {
                     <div class="col-md-8">
                         <div className="card">
                             <div className="card-header">All Categories</div>
-                            <Link to="/add" className="btn btn-primary col-md-3 m-2 btn-sm mr-2">Add</Link>
+                            <Link to="/AddCategory" className="btn btn-primary col-md-3 m-2 btn-sm mr-2">Add</Link>
                             <div class="card-body">
                                 <table class="table table-hover">
                                     <thead>
@@ -127,7 +129,13 @@ class Category extends Component {
                                                         <td>{category.description}</td>
                                                         <td>
                                                             <Link to={`/${category.id}/edit`} className="btn btn-success col-md-4 m-2 btn-sm mr-2">Edit</Link>
-                                                            <Link to='/categories' className="btn btn-danger col-md-4 m-2 btn-sm mr-2" onClick={this.onDelete.bind(this, category.id)}> delete</Link>
+                                                            <Link to='/categories' className="btn btn-danger col-md-4 m-2 btn-sm mr-2" onClick={async () => {
+                                                                const isConfirm = await Confirm('Are you sure you want to delete? ', 'You cannot undo this action?');
+                                                                if (isConfirm) { this.onDelete(category.id) }
+                                                            }
+
+                                                            }
+                                                            >delete</Link>
                                                         </td>
                                                     </tr>
 
@@ -154,7 +162,7 @@ class Category extends Component {
                                     />
                                 </div>
 
-                                {this.state.alert_message == "Success" ? <SuccessAlert message="Record Deleted Successfully" /> : null}
+
                             </div>
 
                         </div>
