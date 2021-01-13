@@ -4,14 +4,15 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
 
-import Navbar from './NavBar';
+import Navbar from '../NavBar';
 import { Confirm } from 'react-st-modal';
-class Admin extends Component {
+
+class Source extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            contacts: [],
+            categories: [],
             activePage: 1,
             itemsCountPerPage: 1,
             totalItemsCount: 1,
@@ -23,9 +24,13 @@ class Admin extends Component {
         console.log(`active page is ${pageNumber}`);
         this.setState({ activePage: pageNumber });
 
-        axios.get('http://localhost:8000/api/Admins?page=' + pageNumber).then(response => {
+        axios.get('http://localhost:8000/api/income-sources?page=' + pageNumber, {
+            headers: {
+                Authorization: `Bearer ${localStorage.adminsToken}`
+            }
+        }).then(response => {
             this.setState({
-                contacts: response.data.data,
+                categories: response.data.data,
                 itemsCountPerPage: response.data.per_page,
                 totalItemsCount: response.data.total,
                 activePage: response.data.current_page
@@ -38,27 +43,51 @@ class Admin extends Component {
 
     }
     componentDidMount() {
-        axios.get('http://localhost:8000/api/Admins').then(response => {
-            this.setState({
-                contacts: response.data.data
-            }
-            )
-        }).catch(error => console.error());
+        axios
+            .get(
+                "http://localhost:8000/api/income-sources",
 
-    }
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.adminsToken}`
+                    }
+                }
+            )
+            .then(res => {
+
+                this.setState({
+                    categories: res.data.data
+                }
+                )
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    };
+
+
+
     onDelete = (ID) => {
 
-        axios.delete(`http://localhost:8000/api/deleteAdmin/` + ID).then(response => {
-            var newState = this.state.contacts;
+        axios.delete(`http://localhost:8000/api/deleteincome-source/` + ID, {
+            headers: {
+                Authorization: `Bearer ${localStorage.adminsToken}`
+            }
+        }
+        ).then(response => {
+            var newState = this.state.categories;
             for (var i = 0; i < newState.length; i++) {
                 if (newState[i].id == ID) {
                     newState.splice(i, 1);
                     this.setState({
-                        contacts: newState
+                        categories: newState
                     })
                 }
 
             }
+            this.setState({
+                alert_message: "Success"
+            })
 
         }).catch(error => console.log(error));
     }
@@ -72,34 +101,37 @@ class Admin extends Component {
 
 
                 <div className="row justify-content-center">
+
                     <div class="col-md-8">
                         <div className="card">
-                            <div className="card-header"> All Admins</div>
-                            <Link to="/AddAdmin" className="btn btn-primary col-md-3 m-2 btn-sm mr-2">Add</Link>
+                            <div className="card-header">All Incomes Source</div>
+                            <Link to="/AddSource" className="btn btn-primary col-md-3 m-2 btn-sm mr-2">Add</Link>
                             <div class="card-body">
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
                                             <th>Name</th>
-                                            <th>Email</th>
+                                            <th>Description</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
 
+
+
                                         {
-                                            this.state.contacts !== null
-                                                ? this.state.contacts.map(contact => (
-                                                    <tr key={contact.id} >
-                                                        <td>{contact.id}</td>
-                                                        <td>{contact.name}</td>
-                                                        <td>{contact.email}</td>
+                                            this.state.categories !== null
+                                                ? this.state.categories.map(category => (
+                                                    <tr key={category.id} >
+                                                        <td>{category.id}</td>
+                                                        <td>{category.name}</td>
+                                                        <td>{category.description}</td>
                                                         <td>
-                                                            <Link to={`/${contact.id}/EditAdmin`} className="btn btn-success col-md-4 m-2 btn-sm mr-2">Edit</Link>
-                                                            <Link to='/Admins' className="btn btn-danger col-md-4 m-2 btn-sm mr-2" onClick={async () => {
+                                                            <Link to={`/${category.id}/editSource`} className="btn btn-success col-md-4 m-2 btn-sm mr-2">Edit</Link>
+                                                            <Link to='/Source' className="btn btn-danger col-md-4 m-2 btn-sm mr-2" onClick={async () => {
                                                                 const isConfirm = await Confirm('Are you sure you want to delete? ', 'You cannot undo this action?');
-                                                                if (isConfirm) { this.onDelete(contact.id) }
+                                                                if (isConfirm) { this.onDelete(category.id) }
                                                             }
 
                                                             }
@@ -111,6 +143,10 @@ class Admin extends Component {
                                                 null
 
                                         }
+
+
+
+
 
                                     </tbody>
                                 </table>
@@ -126,6 +162,7 @@ class Admin extends Component {
                                     />
                                 </div>
 
+
                             </div>
 
                         </div>
@@ -136,4 +173,5 @@ class Admin extends Component {
         );
     }
 }
-export default Admin;
+export default Source;
+

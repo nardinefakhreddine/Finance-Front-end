@@ -4,29 +4,25 @@ import axios from 'axios';
 import ErrorAlert from './ErrorAlert'
 import SuccessAlert from './SuccessAlert';
 
-class Editcategory extends Component {
+class EditAdmin extends Component {
 
 
     constructor(props) {
         super(props);
         this.state = {
             name: '',
-            description: '',
-            photo: 'empty',
+            email: '',
+            password: 'empty',
             ErrorName: '',
             ErrorDesc: ''
         }
     }
-    handleInputNameChange = (event) => {
+    handleInputChange = (event) => {
         this.setState({
-            name: event.target.value
+            [event.target.name]: event.target.value
         })
     }
-    handleInputDChange = (event) => {
-        this.setState({
-            description: event.target.value
-        })
-    }
+
     /*  handleFormSubmit = (event) => {
           event.preventDefault();
           axios.post('http://localhost:8000/api/Addcategory',
@@ -56,7 +52,7 @@ class Editcategory extends Component {
     componentDidMount() {
         const id = this.props.match.params.id;
         console.log(id);
-        axios.get(`http://localhost:8000/api/editcategory/${id}`,
+        axios.get(`http://localhost:8000/api/editAdmin/${id}`,
             {
                 headers: {
                     'Accept': 'application/json',
@@ -66,7 +62,8 @@ class Editcategory extends Component {
             }).then(response => {
                 this.setState({
                     name: response.data.name,
-                    description: response.data.description,
+                    email: response.data.email,
+                    password: response.data.password
                 })
                 console.log(this.state);
             }).catch(error => console.error());
@@ -76,10 +73,11 @@ class Editcategory extends Component {
 
         event.preventDefault();
         const id = this.props.match.params.id;
-        axios.put(`http://localhost:8000/api/updatecategory/${id}`,
+        axios.put(`http://localhost:8000/api/updateAdmin/${id}`,
             {
                 name: this.state.name,
-                description: this.state.description,
+                email: this.state.email,
+                password: this.state.password
 
             },
             {
@@ -92,11 +90,12 @@ class Editcategory extends Component {
         ).then(response => {
             this.setState({
                 name: '',
-                tel: '',
+                email: '',
+                description: '',
                 ErrorName: '',
                 ErrorDesc: ''
             })
-            this.props.history.push('/categories');
+            this.props.history.push('/Admins');
         }
         ).catch(error => {
 
@@ -123,15 +122,16 @@ class Editcategory extends Component {
                 <div className="row justify-content-center">
                     <div className="col-md-8">
                         <div className="card">
-                            <div className="card-header">Edit Category</div>
+                            <div className="card-header">Edit Admin </div>
                             <div className="card-body">
 
                                 <form onSubmit={this.handleFormSubmit}>
                                     <div className="form-group">
 
                                         <input type="text"
+                                            name="name"
                                             required
-                                            onChange={this.handleInputNameChange}
+                                            onChange={this.handleInputChange}
                                             value={this.state.name}
                                             className="form-control"
                                             placeholder="Enter name" />
@@ -140,9 +140,21 @@ class Editcategory extends Component {
                                     <div className="form-group">
 
                                         <input type="text"
+                                            name="email"
                                             required
-                                            onChange={this.handleInputDChange}
-                                            value={this.state.description}
+                                            onChange={this.handleInputChange}
+                                            value={this.state.email}
+                                            className="form-control"
+                                            placeholder="Enter Email" />
+                                        <i style={{ color: 'red', fontSize: '10px' }}>{this.state.alert_message}</i>
+                                    </div>
+                                    <div className="form-group">
+
+                                        <input type="password"
+                                            name="password"
+                                            required
+                                            onChange={this.handleInputChange}
+                                            value={this.state.password}
                                             className="form-control"
                                             placeholder="Enter phone" />
                                         <i style={{ color: 'red', fontSize: '10px' }}>{this.state.alert_message}</i>
@@ -162,4 +174,4 @@ class Editcategory extends Component {
         );
     }
 }
-export default Editcategory;
+export default EditAdmin;

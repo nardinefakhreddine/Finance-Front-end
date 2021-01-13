@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Link, Redirect } from "react-router-dom";
 import axios from 'axios';
 import Navbar from './NavBar';
-
+import BarChartComponent from '../Component/Chart/Chart';
+import PieChartComponent from '../Component/Chart/PieChart';
 
 class Dashboard extends Component {
 
@@ -39,7 +40,9 @@ class Dashboard extends Component {
             <Link to="/" onClick={this.logout.bind(this)} >Logout</Link>
 
             <Link to="/SignUp" >Sign Up</Link>
+            <div style={{ width: '800px', marginLeft: '300px', padding: '10px' }}><BarChartComponent /></div>
 
+            <div style={{ marginTop: '200px' }}> <PieChartComponent /></div>
         </div>
 
         return (

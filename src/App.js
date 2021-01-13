@@ -13,6 +13,15 @@ import Category from './Component/Category';
 import AddCategory from './Component/AddCategory';
 import Editcategory from './Component/EditCategory';
 import AddAdmin from './Component/AddAdmin';
+import Source from './Component/IncomeSource/Source';
+import AddSource from './Component/IncomeSource/AddSource';
+import EditSource from './Component/IncomeSource/EditSource';
+import Expenses from './Component/Expenses/Expenses';
+import EditAdmin from './Component/EditAdmin';
+import Chart from './Component/Chart/Chart';
+import BarChartComponent from './Component/Chart/Chart';
+import PieChartComponent from './Component/Chart/PieChart';
+
 class App extends Component {
 
 
@@ -23,11 +32,22 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={Login}></Route>
             <Route exact path="/dashboard" component={Dashboard}></Route>
+            <Route exact path="/BarChart" component={BarChartComponent}></Route>
+            <Route exact path="/PieChart" component={PieChartComponent}></Route>
+
             <Route exact path="/Admins" component={Admin}></Route>
             <Route exact path="/AddAdmin" component={AddAdmin}></Route>
+            <Route exact path="/:id/EditAdmin" component={EditAdmin}></Route>
+
             <Route exact path="/categories" component={Category}></Route>
             <Route exact path="/AddCategory" component={AddCategory}></Route>
             <Route exact path="/:id/edit" component={Editcategory}></Route>
+
+            <Route exact path="/Source" component={Source}></Route>
+            <Route exact path="/AddSource" component={AddSource}></Route>
+            <Route exact path="/:id/editSource" component={EditSource}></Route>
+
+            <Route exact path="/Expenses" component={Expenses}></Route>
             <Route exact path="/:id/delete" component={Home}></Route>
           </Switch>
         </Router>

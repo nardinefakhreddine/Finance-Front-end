@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import axios from 'axios';
-import ErrorAlert from './ErrorAlert'
-import SuccessAlert from './SuccessAlert';
 
-class Editcategory extends Component {
+
+
+class EditSource extends Component {
 
 
     constructor(props) {
@@ -56,7 +56,7 @@ class Editcategory extends Component {
     componentDidMount() {
         const id = this.props.match.params.id;
         console.log(id);
-        axios.get(`http://localhost:8000/api/editcategory/${id}`,
+        axios.get(`http://localhost:8000/api/editIncomesource/${id}`,
             {
                 headers: {
                     'Accept': 'application/json',
@@ -68,7 +68,7 @@ class Editcategory extends Component {
                     name: response.data.name,
                     description: response.data.description,
                 })
-                console.log(this.state);
+
             }).catch(error => console.error());
 
     }
@@ -76,7 +76,7 @@ class Editcategory extends Component {
 
         event.preventDefault();
         const id = this.props.match.params.id;
-        axios.put(`http://localhost:8000/api/updatecategory/${id}`,
+        axios.put(`http://localhost:8000/api/updateIncomesource/${id}`,
             {
                 name: this.state.name,
                 description: this.state.description,
@@ -96,15 +96,14 @@ class Editcategory extends Component {
                 ErrorName: '',
                 ErrorDesc: ''
             })
-            this.props.history.push('/categories');
+            this.props.history.push('/Source');
         }
         ).catch(error => {
-
-            console.log(error.response.data)
-
-
+            console.log(error.response.data.message)
             this.setState({
                 alert_message: error.response.data.message,
+
+
             })
 
         })
@@ -118,12 +117,11 @@ class Editcategory extends Component {
     render() {
         return (
             <div className="container" >
-                {this.state.ErrorName ? <ErrorAlert message={this.state.ErrorName} /> : null}
-                {this.state.ErrorDesc ? <ErrorAlert message={this.state.ErrorDesc} /> : null}
+
                 <div className="row justify-content-center">
                     <div className="col-md-8">
                         <div className="card">
-                            <div className="card-header">Edit Category</div>
+                            <div className="card-header">Edit Income Source</div>
                             <div className="card-body">
 
                                 <form onSubmit={this.handleFormSubmit}>
@@ -144,9 +142,9 @@ class Editcategory extends Component {
                                             onChange={this.handleInputDChange}
                                             value={this.state.description}
                                             className="form-control"
-                                            placeholder="Enter phone" />
-                                        <i style={{ color: 'red', fontSize: '10px' }}>{this.state.alert_message}</i>
+                                            placeholder="Description" />
                                     </div>
+                                    <i style={{ color: 'red', fontSize: '10px' }}>{this.state.alert_message}</i>
                                     <div className="form-group form-check">
 
                                     </div>
@@ -162,4 +160,4 @@ class Editcategory extends Component {
         );
     }
 }
-export default Editcategory;
+export default EditSource;

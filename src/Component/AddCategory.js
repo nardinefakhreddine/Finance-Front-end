@@ -12,7 +12,9 @@ class AddCategory extends Component {
             description: '',
             photo: 'empty',
             errorName: '',
-            errorDescription: ''
+            errorDescription: '',
+            alert_message1: '',
+            alert_message2: ''
         }
     }
     handleInputNameChange = (event) => {
@@ -52,13 +54,29 @@ class AddCategory extends Component {
             this.props.history.push('/categories');
         }
         ).catch(error => {
-            console.log(error.response.data.errors.name[0])
-            this.setState({
-                errorName: error.response.data.errors.name[0],
-                errorDescription: error.response.data.errors.description[0]
 
-            })
-            console.log(this.state);
+            console.log(error.response.data.message)
+            console.log(error.response.data)
+            if (error.response.data.errors.name !== "undefined" && error.response.data.errors.description !== "undefined") {
+                this.setState({
+                    alert_message1: error.response.data.errors.description,
+                    alert_message2: error.response.data.errors.name,
+                })
+            }
+            else if (error.response.data.errors.description !== "undefined") {
+                this.setState({
+                    alert_message1: error.response.data.errors.description,
+
+                })
+
+
+            } else if (error.response.data.errors.name !== "undefined") {
+                this.setState({
+                    alert_message2: error.response.data.errors.name,
+                })
+            }
+
+
         }
 
         );
@@ -76,12 +94,12 @@ class AddCategory extends Component {
                                 <div className="form-group">
 
                                     <input type="text"
-                                        required
+
                                         onChange={this.handleInputNameChange}
                                         value={this.state.name}
                                         className="form-control"
                                         placeholder="Enter name" />
-                                    <i style={{ color: 'red', fontSize: '10px' }}>{this.state.errorName}</i>
+                                    <i style={{ color: 'red', fontSize: '10px' }}>{this.state.alert_message2}</i>
                                 </div>
                                 <div className="form-group">
 
@@ -91,7 +109,7 @@ class AddCategory extends Component {
                                         value={this.state.description}
                                         className="form-control"
                                         placeholder="Description" />
-                                    <i style={{ color: 'red', fontSize: '10px' }}>{this.state.errorDescription}</i>
+                                    <i style={{ color: 'red', fontSize: '10px' }}>{this.state.alert_message1}</i>
                                 </div>
                                 <div className="form-group form-check">
 
