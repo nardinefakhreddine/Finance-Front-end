@@ -18,7 +18,7 @@ class Expenses extends Component {
             pageRangeDisplayed: 3,
             alert_message: '',
             status: 'fixed',
-            route: 'Expenses'
+            route: 'expense'
         }
     }
 
@@ -27,7 +27,7 @@ class Expenses extends Component {
             status: 'fixed',
 
         })
-        const route = 'Expenses';
+        const route = 'expense';
         axios.get('http://localhost:8000/api/' + route, {
             headers: {
                 'Accept': 'application/json',
@@ -39,7 +39,7 @@ class Expenses extends Component {
                 expenses: response.data.data
             }
             )
-            console.log(this.state);
+
         }).catch(error => console.log(error.response));
 
     }
@@ -48,7 +48,7 @@ class Expenses extends Component {
             status: 'reccurent',
 
         })
-        const route = 'ReccurentExpenses';
+        const route = 'expenseRec';
         axios.get('http://localhost:8000/api/' + route, {
             headers: {
                 'Accept': 'application/json',
@@ -60,7 +60,7 @@ class Expenses extends Component {
                 expenses: response.data.data
             }
             )
-            console.log(this.state);
+
         }).catch(error => console.log(error.response));
 
 
@@ -88,8 +88,7 @@ class Expenses extends Component {
     componentDidMount() {
 
 
-        const route = this.state.route;
-        axios.get('http://localhost:8000/api/' + route, {
+        axios.get('http://localhost:8000/api/expense', {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
@@ -100,8 +99,8 @@ class Expenses extends Component {
                 expenses: response.data.data
             }
             )
-            console.log(this.state);
-        }).catch(error => console.log(error.response));
+            console.log(response);
+        }).catch(error => console.log(error));
 
 
     }
@@ -129,11 +128,11 @@ class Expenses extends Component {
 
 
     render() {
-        console.log(this.state.status)
-        console.log(this.state.route)
+
+
         const Fixed = <div><div>
             <Navbar />
-            <div class="container" >
+            <div >
 
 
                 <div className="row justify-content-center">
@@ -150,7 +149,9 @@ class Expenses extends Component {
                                             <th>Description</th>
                                             <th>Amount</th>
                                             <th>Currency</th>
+                                            <th>Category-Name</th>
                                             <th>Date</th>
+
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -165,6 +166,7 @@ class Expenses extends Component {
                                                         <td>{expense.description}</td>
                                                         <td>{expense.amount}</td>
                                                         <td>{expense.currency}</td>
+                                                        <td>{expense.category.name}</td>
                                                         <td>{expense.date}</td>
                                                         <td>
                                                             <Link to={`/${expense.id}/editExpense`} className="btn btn-success col-md-4 m-2 btn-sm mr-2">Edit</Link>
@@ -200,7 +202,7 @@ class Expenses extends Component {
         </div></div>
         const rec = <div> <div><div>
             <Navbar />
-            <div class="container" >
+            <div >
 
 
                 <div className="row justify-content-center">
@@ -217,6 +219,7 @@ class Expenses extends Component {
                                             <th>Description</th>
                                             <th>Amount</th>
                                             <th>Currency</th>
+                                            <th>Category-Name</th>
                                             <th>Date</th>
                                             <th>Action</th>
                                         </tr>
@@ -232,6 +235,7 @@ class Expenses extends Component {
                                                         <td>{expense.description}</td>
                                                         <td>{expense.amount}</td>
                                                         <td>{expense.currency}</td>
+                                                        <td>{expense.category.name}</td>
                                                         <td>{expense.date}</td>
                                                         <td>
                                                             <Link to={`/${expense.id}/editExpense`} className="btn btn-success col-md-4 m-2 btn-sm mr-2">Edit</Link>

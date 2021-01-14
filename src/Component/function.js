@@ -12,6 +12,7 @@ export const login = async adminsData => {
             },
             {
                 headers: {
+                    "Accept": "application/json",
                     "content-type": "application/json"
                 }
             }

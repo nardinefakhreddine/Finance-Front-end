@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { login } from './function';
-import { Redirect } from 'react-router-dom'
+
 //import { ThemeConsumer } from "react-bootstrap/esm/ThemeProvider";
 
 class Login extends Component {
