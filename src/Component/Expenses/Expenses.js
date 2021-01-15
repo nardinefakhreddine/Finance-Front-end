@@ -18,7 +18,7 @@ class Expenses extends Component {
             totalItemsCount: 1,
             pageRangeDisplayed: 3,
             alert_message: '',
-            status: 'fixed',
+            status: 1,
             route: 'expense'
         }
     }
@@ -244,8 +244,13 @@ class Expenses extends Component {
                                                         <td>{expense.category.name}</td>
                                                         <td>{expense.date}</td>
                                                         <td>
-                                                            <Link to={`/${expense.id}/editExpense`} className=" col-md-2 m-2 btn-sm mr-2"><BsBoxArrowDown /></Link>
-                                                            <Link to='/Expenses' className=" col-md-2 m-2 btn-sm mr-2"> <CgTrash /></Link>
+                                                            <Link to={`/${expense.id}/editExpense/`} className=" col-md-2 m-2 btn-sm mr-2"><BsBoxArrowDown /></Link>
+                                                            <Link to='/Expenses' className=" col-md-2 m-2 btn-sm mr-2" onClick={async () => {
+                                                                const isConfirm = await Confirm('Are you sure you want to delete? ', 'You cannot undo this action');
+                                                                if (isConfirm) { this.onDelete(expense.id) }
+                                                            }
+
+                                                            }> <CgTrash /></Link>
                                                         </td>
                                                     </tr>
 
@@ -285,13 +290,14 @@ class Expenses extends Component {
                         name="st"
                         type="radio"
                         value="fixed"
-                        defaultChecked
+                        checked={this.state.status == 1 ? "defaultChecked " : null}
                         onChange={this.handleChangefixed}
                     />  &nbsp;fixed &nbsp; &nbsp;
                     <input
                         name="st"
                         type="radio"
                         value="reccurent"
+                        checked={this.state.status == 0 ? "defaultChecked" : null}
                         onChange={this.handleChangeRec}
                     />  &nbsp;reccurent
 
@@ -299,7 +305,7 @@ class Expenses extends Component {
 
             </div>
                 <div>
-                    {this.state.status == "fixed" ? Fixed : rec}
+                    {this.state.status == 1 ? Fixed : rec}
 
                 </div>
             </div>

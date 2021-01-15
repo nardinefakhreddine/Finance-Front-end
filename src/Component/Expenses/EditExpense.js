@@ -45,11 +45,14 @@ class EditExpense extends Component {
         })
 
     }
+
     handlefixed = (e) => {
         this.setState({
-            status: 1
+            status: 1,
+            disabled: false
 
         })
+
 
     }
     handlereccurent = (e) => {
@@ -64,6 +67,7 @@ class EditExpense extends Component {
     }
 
     componentDidMount() {
+
         axios
             .get(
                 "http://localhost:8000/api/categories",
@@ -108,7 +112,8 @@ class EditExpense extends Component {
                     currency: response.data.currency,
                     date: response.data.date,
                     startdate: response.data.startdate,
-                    enddate: response.data.enddate
+                    enddate: response.data.enddate,
+                    disabled: false
 
                 })
                 console.log(this.state);
@@ -116,7 +121,104 @@ class EditExpense extends Component {
 
     }
 
+    handleFormSubmit = (event) => {
 
+        event.preventDefault();
+        if (this.state.status == 1) {
+            const id = this.props.match.params.id;
+            axios.put(`http://localhost:8000/api/updateExpense/${id}`,
+                {
+                    title: this.state.title,
+                    description: this.state.description,
+                    status: this.state.status,
+                    amount: this.state.amount,
+                    category_id: this.state.category_id,
+                    currency: this.state.currency,
+                    date: this.state.date,
+
+                },
+                {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.adminsToken}`
+                    }
+                }
+            ).then(response => {
+                this.setState({
+                    title: '',
+                    description: '',
+                    amount: '',
+                    status: 1,//1 fixed 0 reccurent
+                    currency: 'dollar',
+                    date: '',
+                    category_id: 0,
+
+
+                })
+                this.props.history.push('/Expenses');
+            }
+            ).catch(error => {
+
+                console.log(error.response.data)
+
+
+                this.setState({
+                    alert_message: error.response.data.message,
+                })
+
+            })
+        }
+        else {
+            const id = this.props.match.params.id;
+            axios.put(`http://localhost:8000/api/updateExpense/${id}`,
+                {
+                    title: this.state.title,
+                    description: this.state.description,
+                    status: this.state.status,
+                    amount: this.state.amount,
+                    category_id: this.state.category_id,
+                    currency: this.state.currency,
+                    startdate: this.state.startdate,
+                    enddate: this.state.enddate
+
+                },
+                {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.adminsToken}`
+                    }
+                }
+            ).then(response => {
+                this.setState({
+                    title: '',
+                    description: '',
+                    amount: '',
+                    status: 1,//1 fixed 0 reccurent
+                    currency: 'dollar',
+                    date: '',
+                    startdate: '',
+                    enddate: '',
+                    category_id: 0,
+
+
+                })
+                this.props.history.push('/Expenses');
+            }
+            ).catch(error => {
+
+                console.log(error.response.data)
+
+
+                this.setState({
+                    alert_message: error.response.data.message,
+                })
+
+            })
+
+        }
+    }
 
 
 
@@ -151,7 +253,7 @@ class EditExpense extends Component {
             <div className="row justify-content-center">
                 <div className="col-md-8">
                     <div className="card">
-                        <div className="card-header">Edit Fixed Expense</div>
+                        <div className="card-header">Edit Fixed/Reccuent Expense</div>
                         <div className="card-body">
 
                             <form onSubmit={this.handleFormSubmit}>
@@ -190,7 +292,7 @@ class EditExpense extends Component {
                                         value={this.state.date}
                                         className="form-control"
                                         placeholder="date of expense"
-                                        disabled={this.state.disabled ? 'disabled' : null} />
+                                        disabled={this.state.status == 0 ? 'disabled' : null} />
                                 </div>
                                 <div class="form-group col-md-14">
 
@@ -217,15 +319,15 @@ class EditExpense extends Component {
                                         name="st"
                                         type="radio"
                                         value="fixed"
-                                        defaultChecked
-                                        onChange={this.handlefixed}
+                                        checked={this.state.status == 1 ? "defaultChecked " : null}
+                                        onClick={this.handlefixed}
                                     />  &nbsp;fixed &nbsp; &nbsp;
                     <input
                                         name="st"
                                         type="radio"
                                         value="reccurent"
                                         onClick={this.handlereccurent}
-
+                                        checked={this.state.status == 0 ? "defaultChecked " : null}
                                     />  &nbsp;reccurent
 
 

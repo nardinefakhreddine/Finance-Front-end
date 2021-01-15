@@ -24,21 +24,43 @@ export default class BarChartComponent extends Component {
         this.setState({
             Data: {
                 labels:
-                    ['January', 'February', 'March', 'April', 'May', 'June'],
+                    ['category-1', 'category-2', 'category-3'],
 
 
                 datasets: [
                     {
-                        label: 'Category - 1',
+                        label: '2018',
                         data: [20, 45, 28, 80, 99, 43],
                         strokeWidth: 2,
                         backgroundColor: [
-                            'rgba(255,105,145,0.6)',
-                            'rgba(155,100,210,0.6)',
-                            'rgba(90,178,255,0.6)',
-                            'rgba(240,134,67,0.6)',
-                            'rgba(120,120,120,0.6)',
-                            'rgba(250,55,197,0.6)'
+                            'red',
+                            'red',
+                            'red',
+
+                        ]
+                    },
+                    {
+                        label: '2019',
+                        data: [20, 45, 28, 80, 99, 43],
+                        strokeWidth: 2,
+                        backgroundColor: [
+                            'orange',
+                            'orange',
+                            'orange',
+
+
+                        ]
+                    },
+                    {
+                        label: '2020',
+                        data: [20, 45, 28, 80, 99, 43],
+                        strokeWidth: 2,
+                        backgroundColor: [
+                            'black',
+                            'black',
+                            'black',
+
+
                         ]
                     }
                 ]
@@ -56,3 +78,13 @@ export default class BarChartComponent extends Component {
         )
     }
 }
+/*
+
+  backgroundColor: [
+                            'rgba(255,105,145,0.6)',
+                            'rgba(155,100,210,0.6)',
+                            'rgba(90,178,255,0.6)',
+                            'rgba(240,134,67,0.6)',
+                            'rgba(120,120,120,0.6)',
+                            'rgba(250,55,197,0.6)'
+                        ]*/
