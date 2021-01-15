@@ -17,7 +17,7 @@ class AddExpense extends Component {
             date: null,
 
             categories: [],
-            errorName: '',
+            errortitle: '',
             errorDescription: '',
             alert_message1: '',
             alert_message2: ''
@@ -98,34 +98,22 @@ class AddExpense extends Component {
             })
             this.props.history.push('/Expenses');
         }
-        ).catch(error => { console.log(error.response) });
-
-        /*console.log(error.response.data.message)
-        console.log(error.response.data)
-        if (error.response.data.errors.name !== "undefined" && error.response.data.errors.description !== "undefined") {
+        ).catch(error => {
             this.setState({
-                alert_message1: error.response.data.errors.description,
-                alert_message2: error.response.data.errors.name,
+                errortitle: error.response.data.errors.title,
+                errordesription: error.response.data.errors.description,
+                erroramount: error.response.data.errors.amount,
+                errordate: error.response.data.errors.date,
             })
-        }
-        else if (error.response.data.errors.description !== "undefined") {
-            this.setState({
-                alert_message1: error.response.data.errors.description,
+        });
 
-            })
-
-
-        } else if (error.response.data.errors.name !== "undefined") {
-            this.setState({
-                alert_message2: error.response.data.errors.name,
-            })
-        }
-*/
 
 
 
 
     }
+
+
 
     render() {
         return (<div className="container" >
@@ -144,7 +132,7 @@ class AddExpense extends Component {
                                         value={this.state.name}
                                         className="form-control"
                                         placeholder="Enter title" />
-
+                                    <i style={{ color: "red", fontSize: '10px' }}>{this.state.errortitle ? this.state.errortitle : null}</i>
                                 </div>
                                 <div className="form-group">
 
@@ -154,7 +142,7 @@ class AddExpense extends Component {
                                         value={this.state.description}
                                         className="form-control"
                                         placeholder="Description" />
-
+                                    <i style={{ color: "red", fontSize: '10px' }}>{this.state.errordescription ? this.state.errordescription : null}</i>
                                 </div>
                                 <div className="form-group">
                                     <input type="text"
@@ -163,6 +151,8 @@ class AddExpense extends Component {
                                         value={this.state.amount}
                                         className="form-control"
                                         placeholder="Amount in dollar" />
+                                    <i style={{ color: "red", fontSize: '10px' }}>{this.state.erroramount ? this.state.erroramount : null}</i>
+
                                 </div>
                                 <div className="form-group">
                                     <input type="date"
@@ -171,6 +161,7 @@ class AddExpense extends Component {
                                         value={this.state.date}
                                         className="form-control"
                                         placeholder="date of expense" />
+                                    <i style={{ color: "red", fontSize: '10px' }}>{this.state.errordate ? this.state.errordate : null}</i>
                                 </div>
                                 <div class="form-group col-md-14">
 
