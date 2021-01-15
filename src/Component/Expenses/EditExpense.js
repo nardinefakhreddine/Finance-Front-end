@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import axios from 'axios';
 import './Expense.css';
+import Category from '../Category';
 
 class EditExpense extends Component {
 
@@ -195,12 +196,12 @@ class EditExpense extends Component {
 
                                     <select id="categoryid" name="category_id" onChange={this.handleInputChange} class="form-control">
 
-                                        <option name="categoryid" value={this.state.category_id} selected> {this.state.categoryname}</option>         {
+                                        {
                                             this.state.categories !== null
                                                 ? this.state.categories.map(category => (
 
-                                                    <option name="category_id" key={category.id}
-                                                        value={category.id} >{category.name}</option>
+                                                    < option name="category_id" key={category.id}
+                                                        value={category.id} selected={this.state.category_id == category.id ? "selected" : null}>{category.name}  </option>
                                                 )) :
                                                 null
 
@@ -239,7 +240,7 @@ class EditExpense extends Component {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
         );
     }
 }
