@@ -3,7 +3,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
-
+import { CgTrash } from "react-icons/cg";
+import { BsBoxArrowDown } from "react-icons/bs";
 import Navbar from '../NavBar';
 import { Confirm } from 'react-st-modal';
 class Expenses extends Component {
@@ -105,26 +106,26 @@ class Expenses extends Component {
 
     }
 
-    /* onDelete = (ID) => {
-     
-         axios.delete(`http://localhost:8000/api/deleteExpense/` + ID).then(response => {
-             var newState = this.state.expenses;
-             for (var i = 0; i < newState.length; i++) {
-                 if (newState[i].id == ID) {
-                     newState.splice(i, 1);
-                     this.setState({
-                         expenses: newState
-                     })
-                 }
-     
-             }
-             this.setState({
-                 alert_message: "Success"
-             })
-     
-         }).catch(error => console.log(error));
-     }
-    */
+    onDelete = (ID) => {
+
+        axios.delete(`http://localhost:8000/api/deleteExpense/` + ID).then(response => {
+            var newState = this.state.expenses;
+            for (var i = 0; i < newState.length; i++) {
+                if (newState[i].id == ID) {
+                    newState.splice(i, 1);
+                    this.setState({
+                        expenses: newState
+                    })
+                }
+
+            }
+            this.setState({
+                alert_message: "Success"
+            })
+
+        }).catch(error => console.log(error));
+    }
+
 
 
     render() {
@@ -132,7 +133,7 @@ class Expenses extends Component {
 
         const Fixed = <div><div>
             <Navbar />
-            <div >
+            <div className="col-md-20">
 
 
                 <div className="row justify-content-center">
@@ -169,8 +170,13 @@ class Expenses extends Component {
                                                         <td>{expense.category.name}</td>
                                                         <td>{expense.date}</td>
                                                         <td>
-                                                            <Link to={`/${expense.id}/editExpense`} className="btn btn-success col-md-4 m-2 btn-sm mr-2">Edit</Link>
-                                                            <Link to='/Expenses' className="btn btn-danger col-md-4 m-2 btn-sm mr-2"> delete</Link>
+                                                            <Link to={`/${expense.id}/editExpense`} className=" col-md-4 m-2 btn-sm mr-2"><BsBoxArrowDown /></Link>
+                                                            <Link to='/Expenses' className="col-md-4 m-2 btn-sm mr-2" onClick={async () => {
+                                                                const isConfirm = await Confirm('Are you sure you want to delete? ', 'You cannot undo this action');
+                                                                if (isConfirm) { this.onDelete(expense.id) }
+                                                            }
+
+                                                            } ><CgTrash /></Link>
                                                         </td>
                                                     </tr>
 
@@ -238,8 +244,8 @@ class Expenses extends Component {
                                                         <td>{expense.category.name}</td>
                                                         <td>{expense.date}</td>
                                                         <td>
-                                                            <Link to={`/${expense.id}/editExpense`} className="btn btn-success col-md-4 m-2 btn-sm mr-2">Edit</Link>
-                                                            <Link to='/Expenses' className="btn btn-danger col-md-4 m-2 btn-sm mr-2"> delete</Link>
+                                                            <Link to={`/${expense.id}/editExpense`} className=" col-md-2 m-2 btn-sm mr-2"><BsBoxArrowDown /></Link>
+                                                            <Link to='/Expenses' className=" col-md-2 m-2 btn-sm mr-2"> <CgTrash /></Link>
                                                         </td>
                                                     </tr>
 

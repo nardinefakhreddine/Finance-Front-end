@@ -21,6 +21,8 @@ import EditAdmin from './Component/EditAdmin';
 import Chart from './Component/Chart/Chart';
 import BarChartComponent from './Component/Chart/Chart';
 import PieChartComponent from './Component/Chart/PieChart';
+import AddExpense from './Component/Expenses/AddExpense';
+import EditExpense from './Component/Expenses/EditExpense';
 
 class App extends Component {
 
@@ -48,7 +50,9 @@ class App extends Component {
             <Route exact path="/:id/editSource" component={EditSource}></Route>
 
             <Route exact path="/Expenses" component={Expenses}></Route>
-            <Route exact path="/:id/delete" component={Home}></Route>
+            <Route exact path="/AddExpense" component={AddExpense}></Route>
+            <Route exact path="/:id/editExpense" component={EditExpense}></Route>
+
           </Switch>
         </Router>
       </div>
