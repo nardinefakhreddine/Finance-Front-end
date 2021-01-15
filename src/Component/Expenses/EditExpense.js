@@ -18,6 +18,7 @@ class EditExpense extends Component {
             startdate: '',
             enddate: '',
             category_id: 0,
+            categoryname: '',
             categories: [],
             disabled: false,
             errorName: '',
@@ -29,28 +30,7 @@ class EditExpense extends Component {
     }
 
     //Get All categories For Expenses
-    componentDidMount() {
-        axios
-            .get(
-                "http://localhost:8000/api/categories",
 
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.adminsToken}`
-                    }
-                }
-            )
-            .then(res => {
-
-                this.setState({
-                    categories: res.data.data
-                }
-                )
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    }
 
 
 
@@ -83,8 +63,59 @@ class EditExpense extends Component {
     }
 
     componentDidMount() {
+        axios
+            .get(
+                "http://localhost:8000/api/categories",
+
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.adminsToken} `
+                    }
+                }
+            )
+            .then(res => {
+
+                this.setState({
+                    categories: res.data.data
+                }
+                )
+            })
+            .catch(err => {
+                console.log(err);
+            });
+
+
+
+
+        const id = this.props.match.params.id;
+        console.log(id);
+        axios.get(`http://localhost:8000/api/editExpense/${id}`,
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.adminsToken}`
+                }
+            }).then(response => {
+                this.setState({
+                    title: response.data.title,
+                    description: response.data.description,
+                    status: response.data.status,
+                    amount: response.data.amount,
+                    category_id: response.data.category.id,
+                    categoryname: response.data.category.name,
+                    currency: response.data.currency,
+                    date: response.data.date,
+                    startdate: response.data.startdate,
+                    enddate: response.data.enddate
+
+                })
+                console.log(this.state);
+            }).catch(error => console.error());
 
     }
+
+
 
 
 
@@ -101,7 +132,7 @@ class EditExpense extends Component {
         <input type="date"
                     name="startdate"
                     onChange={this.handleInputChange}
-                    value={this.state.date}
+                    value={this.state.startdate}
                     className="form-control"
                     placeholder="StartDate" />
             </div>
@@ -110,7 +141,7 @@ class EditExpense extends Component {
         <input type="date"
                     name="enddate"
                     onClick={this.handleInputChange}
-                    value={this.state.date}
+                    value={this.state.enddate}
                     className="form-control"
                     placeholder="End" />
             </div>
@@ -128,7 +159,7 @@ class EditExpense extends Component {
                                     <input type="text"
                                         name="title"
                                         onChange={this.handleInputChange}
-                                        value={this.state.name}
+                                        value={this.state.title}
                                         className="form-control"
                                         placeholder="Enter title" />
 
@@ -163,12 +194,13 @@ class EditExpense extends Component {
                                 <div class="form-group col-md-14">
 
                                     <select id="categoryid" name="category_id" onChange={this.handleInputChange} class="form-control">
-                                        {
+
+                                        <option name="categoryid" value={this.state.category_id} selected> {this.state.categoryname}</option>         {
                                             this.state.categories !== null
                                                 ? this.state.categories.map(category => (
 
                                                     <option name="category_id" key={category.id}
-                                                        value={category.id} selected >{category.name}</option>
+                                                        value={category.id} >{category.name}</option>
                                                 )) :
                                                 null
 
