@@ -2,89 +2,119 @@
 import React, { Component } from 'react';
 import { Bar } from 'react-chartjs-2';
 import axios from 'axios';
+import Category from '../Category';
 
 export default class BarChartComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            Data: {}
+            Data: {},
+            categories: []
         }
     }
 
     componentDidMount() {
-        /*  axios.get(`http://localhost:8000/api/charts`)
-            .then(res => {
-              const football = res.data;
-              let playername = [];
-              let playerscore = [];
-              football.forEach(element => {
-                playername.push(element.name);
-                playerscore.push(element.score);
-              });*/
-        this.setState({
-            Data: {
-                labels:
-                    ['category-1', 'category-2', 'category-3'],
+        var year = "";
+        var category = [];
+        var datasets = [];
+        axios.get(`http://localhost:8000/api/yearly`).then(res => {
+            const expenses = res.data;
 
+            var newcolors = ["red", "orange", "blue", "black", "yellow"];
+            for (let i = 0; i < expenses.length; i++) {
+                var values = [];
 
-                datasets: [
-                    {
-                        label: '2018',
-                        data: [20, 45, 28, 80, 99, 43],
-                        strokeWidth: 2,
-                        backgroundColor: [
-                            'red',
-                            'red',
-                            'red',
+                for (let j = 0; j < expenses[i].length; j++) {
+                    if (expenses[i].length != 0) {
 
-                        ]
-                    },
-                    {
-                        label: '2019',
-                        data: [20, 45, 28, 80, 99, 43],
-                        strokeWidth: 2,
-                        backgroundColor: [
-                            'orange',
-                            'orange',
-                            'orange',
+                        values.push(expenses[i][j].TotalsExpenses)
+                        year = expenses[i][j].year
 
-
-                        ]
-                    },
-                    {
-                        label: '2020',
-                        data: [20, 45, 28, 80, 99, 43],
-                        strokeWidth: 2,
-                        backgroundColor: [
-                            'black',
-                            'black',
-                            'black',
-
-
-                        ]
                     }
-                ]
+
+                }
+                if (expenses[i].length != 0) {
+                    datasets.push(
+                        {
+                            label: year,
+                            data: values,
+                            strokeWidth: 2,
+                            backgroundColor: [
+                                newcolors[i],
+                                newcolors[i],
+                                newcolors[i],
+                                newcolors[i],
+                                newcolors[i],
+                                newcolors[i],
+                                newcolors[i],
+                                newcolors[i],
+                                newcolors[i]
+
+                            ]
+
+
+
+
+                        },
+
+                    )
+                }
             }
         });
+        console.log(datasets);
+        axios
+            .get(
+                "http://localhost:8000/api/getexp",
 
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.adminsToken}`
+                    }
+                }
+            )
+            .then(res => {
+                console.log(res.data[0].category)
+                var data = res.data
+                for (let i = 0; i < data.length; i++) {
+                    category.push(data[i].category.name)
+                }
+                let uniqueChars = category.filter((c, index) => {
+                    return category.indexOf(c) === index;
+                });
+                console.log(uniqueChars);
+                this.setState({
+                    Data: {
+                        labels:
+                            uniqueChars,
+                        datasets: datasets
+                    }
+                });
+
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        console.log(category)
+
+
+
+
+
+
+        console.log(this.state.Data)
     }
     render() {
+
+
+
         return (
             <div>
                 <Bar
                     data={this.state.Data}
                     options={{ maintainAspectRatio: false }} />
-            </div>
+            </div >
+
         )
     }
 }
-/*
-
-  backgroundColor: [
-                            'rgba(255,105,145,0.6)',
-                            'rgba(155,100,210,0.6)',
-                            'rgba(90,178,255,0.6)',
-                            'rgba(240,134,67,0.6)',
-                            'rgba(120,120,120,0.6)',
-                            'rgba(250,55,197,0.6)'
-                        ]*/
+// $month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];

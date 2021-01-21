@@ -130,7 +130,7 @@ class Category extends Component {
                                                         <td>
                                                             <Link to={`/${category.id}/edit`} className="btn btn-success col-md-4 m-2 btn-sm mr-2">Edit</Link>
                                                             <Link to='/categories' className="btn btn-danger col-md-4 m-2 btn-sm mr-2" onClick={async () => {
-                                                                const isConfirm = await Confirm('Are you sure you want to delete? ', 'You cannot undo this action?');
+                                                                const isConfirm = await Confirm('Are you sure you want to delete? ', 'You cannot undo this action');
                                                                 if (isConfirm) { this.onDelete(category.id) }
                                                             }
 
