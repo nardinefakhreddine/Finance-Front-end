@@ -23,13 +23,18 @@ import BarChartComponent from './Component/Chart/Chart';
 import PieChartComponent from './Component/Chart/PieChart';
 import AddExpense from './Component/Expenses/AddExpense';
 import EditExpense from './Component/Expenses/EditExpense';
+import AddReccurentExpense from './Component/Expenses/AddRecurentExpense';
+import Incomes from './Component/Incomes/Incomes';
+import AddIncome from './Component/Incomes/AddIncome';
+import EditIncome from './Component/Incomes/EditIncome';
+import AddReccurentIncome from './Component/Incomes/AddRecurentIncomes';
 
 class App extends Component {
 
 
   render() {
     return (
-      <div className="App">
+      <div className="App" >
         <Router>
           <Switch>
             <Route exact path="/" component={Login}></Route>
@@ -51,9 +56,13 @@ class App extends Component {
 
             <Route exact path="/Expenses" component={Expenses}></Route>
             <Route exact path="/AddExpense" component={AddExpense}></Route>
+            <Route exact path="/AddReccurentExpense" component={AddReccurentExpense}></Route>
             <Route exact path="/:id/editExpense" component={EditExpense}></Route>
 
-
+            <Route exact path="/Incomes" component={Incomes}></Route>
+            <Route exact path="/AddIncome" component={AddIncome}></Route>
+            <Route exact path="/AddReccurentIncome" component={AddReccurentIncome}></Route>
+            <Route exact path="/:id/editIncome" component={EditIncome}></Route>
           </Switch>
         </Router>
       </div>

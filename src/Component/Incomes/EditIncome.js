@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import axios from 'axios';
-import './Expense.css';
+
 import Category from '../Category';
 
-class EditExpense extends Component {
+class EditIncome extends Component {
 
 
     constructor(props) {
@@ -253,7 +253,7 @@ class EditExpense extends Component {
             <div className="row justify-content-center">
                 <div className="col-md-8">
                     <div className="card">
-                        <div className="card-header">Edit Fixed/Reccuent Expense</div>
+                        <div className="card-header">Edit Fixed/Reccuent Income</div>
                         <div className="card-body">
 
                             <form onSubmit={this.handleFormSubmit}>
@@ -346,4 +346,4 @@ class EditExpense extends Component {
         );
     }
 }
-export default EditExpense;
+export default EditIncome;

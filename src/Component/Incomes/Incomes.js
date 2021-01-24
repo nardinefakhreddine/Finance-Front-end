@@ -7,7 +7,7 @@ import { CgTrash } from "react-icons/cg";
 import { BsBoxArrowDown } from "react-icons/bs";
 import Navbar from '../NavBar';
 import { Confirm } from 'react-st-modal';
-class Expenses extends Component {
+class Incomes extends Component {
 
     constructor(props) {
         super(props);
@@ -19,7 +19,7 @@ class Expenses extends Component {
             pageRangeDisplayed: 3,
             alert_message: '',
             status: 1,
-            route: 'expense'
+            route: 'income'
         }
     }
 
@@ -28,28 +28,31 @@ class Expenses extends Component {
             status: 1,
 
         })
-        const route = 'expense';
-        axios.get('http://localhost:8000/api/' + route, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${localStorage.adminsToken}`
-            }
-        }).then(response => {
-            this.setState({
-                expenses: response.data.data
-            }
-            )
-
-        }).catch(error => console.log(error.response));
-
     }
+    /*
+    const route = 'income';
+    axios.get('http://localhost:8000/api/' + route, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.adminsToken}`
+        }
+    }).then(response => {
+        this.setState({
+            expenses: response.data.data
+        }
+        )
+ 
+    }).catch(error => console.log(error.response));
+ 
+}*/
     handleChangeRec = (event) => {
         this.setState({
             status: 0,
 
         })
-        const route = 'expenseRec';
+
+        const route = 'incomeRec';
         axios.get('http://localhost:8000/api/' + route, {
             headers: {
                 'Accept': 'application/json',
@@ -67,29 +70,29 @@ class Expenses extends Component {
 
     }
 
+
     /*   handlePageChange = (pageNumber) => {
            console.log(`active page is ${pageNumber}`);
            this.setState({ activePage: pageNumber });
-   
+     
            axios.get('http://localhost:8000/api/expense?page=' + pageNumber).then(response => {
                this.setState({
                    expenses: response.data.data,
                    itemsCountPerPage: response.data.per_page,
                    totalItemsCount: response.data.total,
                    activePage: response.data.current_page
-   
-   
-   
+     
+     
+     
                })
            }).catch(error => console.log(error.response));
-   
+     
        }
-   */
+    */
 
     componentDidMount() {
 
-
-        axios.get('http://localhost:8000/api/expense', {
+        axios.get('http://localhost:8000/api/income', {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
@@ -100,7 +103,7 @@ class Expenses extends Component {
                 expenses: response.data.data
             }
             )
-            console.log(response);
+            console.log(response.data.data);
         }).catch(error => console.log(error));
 
 
@@ -108,7 +111,7 @@ class Expenses extends Component {
 
     onDelete = (ID) => {
 
-        axios.delete(`http://localhost:8000/api/deleteExpense/` + ID).then(response => {
+        axios.delete(`http://localhost:8000/api/deleteIncome/` + ID).then(response => {
             var newState = this.state.expenses;
             for (var i = 0; i < newState.length; i++) {
                 if (newState[i].id == ID) {
@@ -139,8 +142,8 @@ class Expenses extends Component {
                 <div className="row justify-content-center">
                     <div class="col-md-8">
                         <div className="card">
-                            <div className="card-header"> All Fixed Expenses</div>
-                            <Link to="/AddExpense" className="btn btn-primary col-md-3 m-2 btn-sm mr-2">Add</Link>
+                            <div className="card-header"> All Fixed Incomes</div>
+                            <Link to="/AddIncome" className="btn btn-primary col-md-3 m-2 btn-sm mr-2">Add</Link>
                             <div class="card-body">
                                 <table class="table table-hover">
                                     <thead>
@@ -166,11 +169,11 @@ class Expenses extends Component {
                                                         <td>{expense.description}</td>
                                                         <td>{expense.amount}</td>
                                                         <td>{expense.currency}</td>
-                                                        <td>{expense.category.name}</td>
+                                                        <td>{expense.source.name}</td>
                                                         <td>{expense.date}</td>
                                                         <td>
                                                             <Link to={`/${expense.id}/editExpense`} className=" col-md-4 m-2 btn-sm mr-2"><BsBoxArrowDown /></Link>
-                                                            <Link to='/Expenses' className="col-md-4 m-2 btn-sm mr-2" onClick={async () => {
+                                                            <Link to='/Incomes' className="col-md-4 m-2 btn-sm mr-2" onClick={async () => {
                                                                 const isConfirm = await Confirm('Are you sure you want to delete? ', 'You cannot undo this action');
                                                                 if (isConfirm) { this.onDelete(expense.id) }
                                                             }
@@ -213,8 +216,8 @@ class Expenses extends Component {
                 <div className="row justify-content-center">
                     <div class="col-md-8">
                         <div className="card">
-                            <div className="card-header"> All Reccurent Expenses</div>
-                            <Link to="/AddReccurentExpense" className="btn btn-primary col-md-3 m-2 btn-sm mr-2">Add</Link>
+                            <div className="card-header"> All Reccurent Incomes</div>
+                            <Link to="/AddReccurentIncome" className="btn btn-primary col-md-3 m-2 btn-sm mr-2">Add</Link>
                             <div class="card-body">
                                 <table class="table table-hover">
                                     <thead>
@@ -240,14 +243,13 @@ class Expenses extends Component {
                                                         <td>{expense.title}</td>
                                                         <td>{expense.description}</td>
                                                         <td>{expense.amount}</td>
-
-                                                        <td>{expense.category.name}</td>
+                                                        <td>{expense.source.name}</td>
                                                         <td>{expense.reccurence}</td>
                                                         <td>{expense.startdate}</td>
                                                         <td>{expense.enddate}</td>
                                                         <td>
                                                             <Link to={`/${expense.id}/editExpense/`} className=" col-md-2 m-2 btn-sm mr-2"><BsBoxArrowDown /></Link>
-                                                            <Link to='/Expenses' className=" col-md-2 m-2 btn-sm mr-2" onClick={async () => {
+                                                            <Link to='/Incomes' className=" col-md-2 m-2 btn-sm mr-2" onClick={async () => {
                                                                 const isConfirm = await Confirm('Are you sure you want to delete? ', 'You cannot undo this action');
                                                                 if (isConfirm) { this.onDelete(expense.id) }
                                                             }
@@ -314,4 +316,4 @@ class Expenses extends Component {
         );
     }
 }
-export default Expenses;
+export default Incomes;

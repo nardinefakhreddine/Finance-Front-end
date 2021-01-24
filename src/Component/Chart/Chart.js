@@ -13,6 +13,23 @@ export default class BarChartComponent extends Component {
         }
     }
 
+
+    /* componentDidMount() {
+         axios.get(`http://localhost:8000/api/yearly`)
+             .then(res => {
+                 const expenses = res.data;
+                 let categories = [];
+                 let TotalsExpenses = [];
+ 
+                 expenses.forEach(element => {
+                     categories.push(element.name);
+                     TotalsExpenses.push(element.TotalsExpenses);
+                 });
+                 console.log(expenses);
+ 
+             });
+ 
+     }*/
     componentDidMount() {
         var year = "";
         var category = [];
@@ -20,7 +37,7 @@ export default class BarChartComponent extends Component {
         axios.get(`http://localhost:8000/api/yearly`).then(res => {
             const expenses = res.data;
 
-            var newcolors = ["red", "orange", "blue", "black", "yellow"];
+            var newcolors = ["rgba(255,105,145,0.6)", "rgba(155,100,210,0.6)", "rgba(90,178,255,0.6)", "rgba(240,134,67,0.6)", "rgba(120,120,120,0.6)"];
             for (let i = 0; i < expenses.length; i++) {
                 var values = [];
 
@@ -68,7 +85,7 @@ export default class BarChartComponent extends Component {
 
                 {
                     headers: {
-                        Authorization: `Bearer ${localStorage.adminsToken}`
+                        Authorization: `Bearer ${localStorage.adminsToken} `
                     }
                 }
             )

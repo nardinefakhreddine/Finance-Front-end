@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import axios from 'axios';
 
-class AddExpense extends Component {
+class AddIncome extends Component {
 
 
     constructor(props) {
@@ -13,7 +13,7 @@ class AddExpense extends Component {
             amount: '',
             status: 1,
             currency: 'dollar',
-            category_id: 0,
+            category_id: 1,
             date: null,
 
             categories: [],
@@ -28,7 +28,7 @@ class AddExpense extends Component {
     componentDidMount() {
         axios
             .get(
-                "http://localhost:8000/api/categories",
+                "http://localhost:8000/api/income-sources",
 
                 {
                     headers: {
@@ -49,9 +49,6 @@ class AddExpense extends Component {
     };
 
 
-
-
-
     handleInputChange = (event) => {
         this.setState({
             [event.target.name]: event.target.value,
@@ -60,19 +57,28 @@ class AddExpense extends Component {
         })
         console.log(this.state);
     }
+    handleInputSource = (event) => {
+        this.setState({
+            category_id: event.target.value,
+
+
+        })
+        console.log(this.state);
+    }
+
 
 
 
     //Insert EXpense
     handleFormSubmit = (event) => {
         event.preventDefault();
-        axios.post('http://localhost:8000/api/AddExpense',
+        axios.post('http://localhost:8000/api/AddIncome',
             {
                 title: this.state.title,
                 description: this.state.description,
                 status: this.state.status,
                 amount: this.state.amount,
-                category_id: this.state.category_id,
+                source_id: this.state.category_id,
                 currency: this.state.currency,
                 date: this.state.date,
 
@@ -97,10 +103,10 @@ class AddExpense extends Component {
                 categories: [],
 
             })
-            this.props.history.push('/Expenses');
+            this.props.history.push('/Incomes');
         }
         ).catch(error => {
-            console.log(error.response)
+            console.log(error.response.data)
         });
 
 
@@ -116,7 +122,7 @@ class AddExpense extends Component {
             <div className="row justify-content-center">
                 <div className="col-md-8">
                     <div className="card">
-                        <div className="card-header">Add Fixed Expense</div>
+                        <div className="card-header">Add Fixed Income</div>
                         <div className="card-body">
 
                             <form onSubmit={this.handleFormSubmit}>
@@ -161,7 +167,7 @@ class AddExpense extends Component {
                                 </div>
                                 <div class="form-group col-md-14">
 
-                                    <select id="categoryid" name="category_id" onChange={this.handleInputChange} class="form-control">
+                                    <select id="categoryid" name="category_id" onChange={this.handleInputSource} class="form-control">
                                         {
                                             this.state.categories !== null
                                                 ? this.state.categories.map(category => (
@@ -187,4 +193,4 @@ class AddExpense extends Component {
         );
     }
 }
-export default AddExpense;
+export default AddIncome;

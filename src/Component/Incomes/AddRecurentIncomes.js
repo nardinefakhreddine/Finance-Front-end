@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import axios from 'axios';
 
-class AddExpense extends Component {
+class AddReccurentIncome extends Component {
 
 
     constructor(props) {
@@ -11,11 +11,13 @@ class AddExpense extends Component {
             title: '',
             description: '',
             amount: '',
-            status: 1,
+            status: 0,
             currency: 'dollar',
-            category_id: 0,
+            category_id: 1,
             date: null,
-
+            startdate: null,
+            enddate: null,
+            reccurence: "yearly",
             categories: [],
             errortitle: '',
             errorDescription: '',
@@ -28,7 +30,7 @@ class AddExpense extends Component {
     componentDidMount() {
         axios
             .get(
-                "http://localhost:8000/api/categories",
+                "http://localhost:8000/api/income-sources",
 
                 {
                     headers: {
@@ -60,21 +62,30 @@ class AddExpense extends Component {
         })
         console.log(this.state);
     }
+    handleInputSource = (event) => {
+        this.setState({
+            category_id: event.target.value,
 
+
+        })
+        console.log(this.state);
+    }
 
 
     //Insert EXpense
     handleFormSubmit = (event) => {
         event.preventDefault();
-        axios.post('http://localhost:8000/api/AddExpense',
+        axios.post('http://localhost:8000/api/AddIncome',
             {
                 title: this.state.title,
                 description: this.state.description,
                 status: this.state.status,
                 amount: this.state.amount,
-                category_id: this.state.category_id,
+                source_id: this.state.category_id,
                 currency: this.state.currency,
-                date: this.state.date,
+                reccurence: this.state.reccurence,
+                startdate: this.state.startdate,
+                enddate: this.state.enddate
 
 
             },
@@ -100,7 +111,7 @@ class AddExpense extends Component {
             this.props.history.push('/Expenses');
         }
         ).catch(error => {
-            console.log(error.response)
+            console.log(error.response);
         });
 
 
@@ -116,7 +127,7 @@ class AddExpense extends Component {
             <div className="row justify-content-center">
                 <div className="col-md-8">
                     <div className="card">
-                        <div className="card-header">Add Fixed Expense</div>
+                        <div className="card-header">Add Reccurente Expense</div>
                         <div className="card-body">
 
                             <form onSubmit={this.handleFormSubmit}>
@@ -150,24 +161,51 @@ class AddExpense extends Component {
                                     <i style={{ color: "red", fontSize: '10px' }}>{this.state.erroramount ? this.state.erroramount : null}</i>
 
                                 </div>
+                                <div class="form-group col-md-14">
+
+                                    <select id="reccurence" name="reccurence" onChange={this.handleInputChange} class="form-control">
+
+
+                                        <option name="reccurence"
+                                            value="yearly" selected >yearly</option>
+                                        <option name="reccurence"
+                                            value="monthly" selected >monthly</option>
+
+
+
+                                    </select>
+                                </div>
+
                                 <div className="form-group">
+                                    start date
                                     <input type="date"
-                                        name="date"
+                                        name="startdate"
                                         onChange={this.handleInputChange}
-                                        value={this.state.date}
+                                        value={this.state.startdate}
                                         className="form-control"
                                         placeholder="date of expense" />
                                     <i style={{ color: "red", fontSize: '10px' }}>{this.state.errordate ? this.state.errordate : null}</i>
                                 </div>
+                                <div className="form-group">
+                                    End date
+                                    <input type="date"
+                                        name="enddate"
+                                        onChange={this.handleInputChange}
+                                        value={this.state.enddate}
+                                        className="form-control"
+                                        placeholder="date of expense" />
+                                    <i style={{ color: "red", fontSize: '10px' }}>{this.state.errordate ? this.state.errordate : null}</i>
+                                </div>
+
                                 <div class="form-group col-md-14">
 
-                                    <select id="categoryid" name="category_id" onChange={this.handleInputChange} class="form-control">
+                                    <select id="category_id" name="category_id" onChange={this.handleInputSource} class="form-control">
                                         {
                                             this.state.categories !== null
                                                 ? this.state.categories.map(category => (
 
                                                     <option name="category_id" key={category.id}
-                                                        value={category.id} selected >{category.name}</option>
+                                                        value={category.id} selected>{category.name}</option>
                                                 )) :
                                                 null
 
@@ -187,4 +225,4 @@ class AddExpense extends Component {
         );
     }
 }
-export default AddExpense;
+export default AddReccurentIncome;
